@@ -13,8 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { constants } from "@/lib/constants";
 import { useSession } from "next-auth/react";
+import { getBaseUrl } from "@/lib/get-url";
+import Image from "next/image";
 
 export interface PosterData {
   posterName: string;
@@ -31,7 +32,7 @@ export function PosterUploadForm() {
   const userData = useSession().data;
   const [posterTypes, setPosterTypes] = useState<PosterType[]>([]);
   useEffect(() => {
-    fetch(`${constants.localBaseUrl}/poster/group/admin`)
+    fetch(`${getBaseUrl()}/poster/group/admin`)
       .then((res) => res.json())
       .then((data) => {
         setPosterTypes([...data.poster_types]);
@@ -52,7 +53,7 @@ export function PosterUploadForm() {
     formData.append("name", data.posterName);
     formData.append("group_id", data.posterType);
     Array.from(data.image).forEach((img) => formData.append("poster", img));
-    fetch(`${constants.localBaseUrl}/poster`, {
+    fetch(`${getBaseUrl()}/poster`, {
       method: "POST",
       body: formData,
       headers: {
@@ -144,7 +145,7 @@ export function PosterUploadForm() {
       {preview && (
         <div className="mt-4">
           <h3 className="text-lg font-semibold mb-2">Image Preview</h3>
-          <img
+          <Image
             src={preview}
             alt="Preview"
             className="w-full h-48 object-cover rounded"

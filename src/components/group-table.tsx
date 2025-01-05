@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Badge } from "./ui/badge";
 import {
   Table,
   TableHeader,
@@ -8,7 +7,8 @@ import {
   TableBody,
   TableCell,
 } from "./ui/table";
-
+import { getBaseUrl } from "@/lib/get-url";
+import Image from "next/image";
 type Grouptype = {
   id: string;
   name: string;
@@ -21,7 +21,7 @@ export function GroupTable() {
 
   useEffect(() => {
     console.log("Fetching users...");
-    fetch("http://localhost:8080/api/v2/group")
+    fetch(`${getBaseUrl()}/group`)
       .then((response) => response.json())
       .then((data: { groups: Grouptype[] }) => {
         console.log("Fetched data:", data);
@@ -49,7 +49,7 @@ export function GroupTable() {
       <TableCell className="hidden sm:table-cell">{grp.area_code}</TableCell>
 
       <TableCell className="hidden md:table-cell">
-        <img src={grp.logo} className="h-20"></img>
+        <Image src={grp.logo} className="h-20" alt="Poster"></Image>
       </TableCell>
     </TableRow>
   ));

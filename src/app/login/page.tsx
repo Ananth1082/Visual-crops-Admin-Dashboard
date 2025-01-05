@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,13 +14,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import axios from "axios";
-import { constants } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { redirect } from "next/navigation";
 import { Toaster } from "@/components/ui/toaster";
-import { useSession } from "next-auth/react";
-import { set } from "react-hook-form";
+import { getBaseUrl } from "@/lib/get-url";
 
 export default function PhoneLogin() {
   const { toast } = useToast();
@@ -36,7 +34,7 @@ export default function PhoneLogin() {
     setLoading(true);
     setError(null);
     axios
-      .post(`${constants.localBaseUrl}/auth/send-otp`, {
+      .post(`${getBaseUrl()}/auth/send-otp`, {
         phone: phoneNumber,
       })
       .then((res) => {

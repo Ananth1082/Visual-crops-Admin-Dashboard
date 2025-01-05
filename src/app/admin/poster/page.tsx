@@ -154,9 +154,9 @@
 import { useEffect, useState } from "react";
 import { PosterUploadDialog } from "../../../components/poster-upload-dialog-box";
 import { PosterCard } from "../../../components/poster-card";
-import { constants } from "@/lib/constants";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { getBaseUrl } from "@/lib/get-url";
 
 type PosterViewType = {
   posterName: string;
@@ -172,13 +172,10 @@ export default function Page() {
       redirect("/login");
     },
   });
-
-  if (status !== "authenticated") {
-    return <h1>Unauthorized</h1>;
-  }
   const [posters, setPosters] = useState<PosterViewType[]>([]);
+
   useEffect(() => {
-    fetch(`${constants.localBaseUrl}/poster/admin-poster`)
+    fetch(`${getBaseUrl()}/poster/admin-poster`)
       .then((res) => res.json())
       .then(
         ({
@@ -208,7 +205,9 @@ export default function Page() {
       )
       .catch(console.log);
   }, []);
-
+  if (status !== "authenticated") {
+    return <h1>Unauthorized</h1>;
+  }
   return (
     <div className="container mx-auto py-5 px-10">
       <h1 className="text-3xl font-bold mb-8">Poster Management</h1>

@@ -8,6 +8,7 @@ import {
   TableBody,
   TableCell,
 } from "./ui/table";
+import { getBaseUrl } from "@/lib/get-url";
 
 type Usertype = {
   username: string;
@@ -21,18 +22,25 @@ export function UserTable() {
 
   useEffect(() => {
     console.log("Fetching users...");
-    fetch("http://localhost:8080/api/v2/user/get-all-users")
+    fetch(`${getBaseUrl()}/user/get-all-users`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched data:", data);
-        const users: Usertype[] = data.map((user: any) => {
-          return {
-            username: user.Names.length > 0 ? user.Names[0].name : "No name",
-            state: user.state.name,
-            district: user.district.name,
-            phone: user.phone,
-          };
-        });
+        const users: Usertype[] = data.map(
+          (user: {
+            Names: { name: string }[];
+            state: { name: string };
+            district: { name: string };
+            phone: string;
+          }) => {
+            return {
+              username: user.Names.length > 0 ? user.Names[0].name : "No name",
+              state: user.state.name,
+              district: user.district.name,
+              phone: user.phone,
+            };
+          }
+        );
         console.log(users);
 
         setUsers(users);

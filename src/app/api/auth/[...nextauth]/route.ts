@@ -2,8 +2,9 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { getRefreshTokenExpiry, isJwtExpired } from "@/lib/jwt";
+import { getBaseUrl } from "@/lib/get-url";
 
-const authUrl = "http://localhost:8080/api/v2/auth";
+const authUrl = `${getBaseUrl()}/auth`;
 declare module "next-auth" {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
@@ -62,7 +63,7 @@ declare module "next-auth/jwt" {
     };
   }
 }
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 7 * 24 * 60 * 60,

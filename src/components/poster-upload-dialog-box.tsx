@@ -10,15 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { PosterUploadForm, PosterData } from "./poster-upload-form";
+import { PosterUploadForm } from "./poster-upload-form";
 
 export function PosterUploadDialog() {
   const [open, setOpen] = useState(false);
-
-  const handleSuccess = (data: PosterData) => {
-    // onPosterAdded(data);
-    setOpen(false);
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
