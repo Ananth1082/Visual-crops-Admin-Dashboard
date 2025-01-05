@@ -27,7 +27,7 @@ export function PosterUploadDialog() {
             Fill in the details and upload an image for your new poster.
           </DialogDescription>
         </DialogHeader>
-        <PosterUploadForm />
+        <PosterUploadForm setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

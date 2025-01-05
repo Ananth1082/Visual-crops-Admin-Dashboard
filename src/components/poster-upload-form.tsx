@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,7 +28,11 @@ type PosterType = {
   id: string;
   name: string;
 };
-export function PosterUploadForm() {
+export function PosterUploadForm({
+  setOpen,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const userData = useSession().data;
   const [posterTypes, setPosterTypes] = useState<PosterType[]>([]);
   useEffect(() => {
@@ -48,7 +52,6 @@ export function PosterUploadForm() {
   const [preview, setPreview] = useState<string | null>(null);
 
   const onSubmit = (data: PosterData) => {
-    console.log("submit data", data);
     const formData = new FormData();
     formData.append("name", data.posterName);
     formData.append("group_id", data.posterType);
@@ -64,6 +67,7 @@ export function PosterUploadForm() {
         console.log(res);
         reset();
         setPreview(null);
+        setOpen(false);
       })
       .catch((err) => {
         console.log(err);
@@ -148,6 +152,8 @@ export function PosterUploadForm() {
           <Image
             src={preview}
             alt="Preview"
+            width={100}
+            height={100}
             className="w-full h-48 object-cover rounded"
           />
         </div>
